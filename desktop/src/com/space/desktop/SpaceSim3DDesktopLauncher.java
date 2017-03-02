@@ -10,7 +10,8 @@ public class SpaceSim3DDesktopLauncher {
 		// config.width = 1280;
 		// config.height = 720;
 		config.width = 1800;
-		config.height = 1400;
+		config.height = 900;
+		// config.fullscreen = true;
 		new LwjglApplication(new SpaceSim(), config);
 	}
 }
