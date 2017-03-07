@@ -39,6 +39,7 @@ public class InputHandler extends CameraInputController {
 			break;
 		case Keys.W:
 			renderer.setCameraAtSun();
+			resetIndex();
 			break;
 		case Keys.H:
 			hud.toggleHelpContext();
@@ -51,6 +52,24 @@ public class InputHandler extends CameraInputController {
 			break;
 		case Keys.S:
 			renderer.getUniverse().toggleSky();
+			break;
+		case Keys.UP:
+			camera.translate(0, 5, 0);
+			break;
+		case Keys.DOWN:
+			camera.translate(0, -5, 0);
+			break;
+		case Keys.LEFT:
+			camera.translate(-5, 0, 0);
+			break;
+		case Keys.RIGHT:
+			camera.translate(5, 0, 0);
+			break;
+		case Keys.Z:
+			renderer.getUniverse().decelerateOrbits();
+			break;
+		case Keys.X:
+			renderer.getUniverse().accelerateOrbits();
 			break;
 		}
 		return true;
@@ -70,7 +89,13 @@ public class InputHandler extends CameraInputController {
 
 	private int downIndex() {
 		renderer.translate = true;
+		if (index == -1)
+			index = 0;
 		return index > 0 ? --index : index;
+	}
+
+	private void resetIndex() {
+		index = 0;
 	}
 
 }

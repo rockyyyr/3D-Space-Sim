@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 public class Sun extends CelestialBody {
 
 	private static final String NAME = "Sun";
-	private static final float SCALE = 8;
+	private static final float SCALE = 18;
 
 	protected Model model;
 	protected ModelInstance modelInstance;
@@ -34,7 +34,7 @@ public class Sun extends CelestialBody {
 			doneLoading();
 
 		if (modelInstance != null) {
-			modelInstance.transform.rotate(0, 1, 0, 0.75f);
+			modelInstance.transform.rotate(0, 1, 0, -0.75f);
 			batch.render(modelInstance);
 		}
 	}
@@ -51,15 +51,15 @@ public class Sun extends CelestialBody {
 
 	protected void buildModel() {
 		assets = new AssetManager();
-		assets.load("data/" + NAME + ".g3dj", Model.class);
+		assets.load("entities/" + NAME + ".g3dj", Model.class);
 		loading = true;
 	}
 
 	@Override
 	protected void doneLoading() {
-		model = assets.get("data/" + NAME + ".g3dj", Model.class);
+		model = assets.get("entities/" + NAME + ".g3dj", Model.class);
 		modelInstance = new ModelInstance(model, position);
-		modelInstance.transform.scl(8);
+		modelInstance.transform.scl(SCALE);
 		loading = false;
 	}
 

@@ -12,7 +12,7 @@ import com.space.universe.solarsystem.CelestialBody;
 import com.space.util.InputHandler;
 
 /**
- * UniverseRenderer.
+ * This class handles rendering of entities and contains the main camera and environment
  */
 public class UniverseRenderer {
 
@@ -21,14 +21,13 @@ public class UniverseRenderer {
 	private ModelBatch batch;
 	private Hud hud;
 
-	private CelestialBody currentCelestialBody;
-
 	private PerspectiveCamera camera;
 	private InputHandler inputHandler;
 	private CameraInputController cameraController;
 
 	private PointLight light;
 
+	private CelestialBody currentCelestialBody;
 	private Vector3 cameraPosition;
 	public boolean translate;
 	public boolean lookAt;
@@ -46,20 +45,43 @@ public class UniverseRenderer {
 	}
 
 	public void render() {
-		hud.setCurrentPlanet(currentCelestialBody);
-
-		if (translate)
-			camera.position.set(cameraPosition);
-
-		if (lookAt) {
+		if (translate) {
+			camera.position.set(currentCelestialBody.getCameraPosition());
 			camera.lookAt(currentCelestialBody.getPosition());
-			lookAt = false;
 		}
-		camera.update();
 
+		camera.update();
 		batch.begin(camera);
 		universe.render(batch, environment);
 		batch.end();
+	}
+
+	/**
+	 * Sets the main camera at the specified planet's camera position
+	 * 
+	 * @param index
+	 *            the index of the planet array
+	 */
+	public void setCameraAtPlanet(int index) {
+		currentCelestialBody = universe.getPlanets().get(index);
+		hud.setCurrentPlanet(currentCelestialBody);
+		cameraPosition = currentCelestialBody.getCameraPosition();
+	}
+
+	/**
+	 * Sets the camera at the sun
+	 */
+	public void setCameraAtSun() {
+		currentCelestialBody = universe.getSun();
+		hud.setCurrentPlanet(currentCelestialBody);
+		camera.position.set(0, 0, 100);
+	}
+
+	/**
+	 * @return the universe which contains all entities
+	 */
+	public Universe getUniverse() {
+		return universe;
 	}
 
 	private void setupCamera() {
@@ -73,24 +95,9 @@ public class UniverseRenderer {
 		setCameraAtSun();
 	}
 
-	public void setCameraAtPlanet(int index) {
-		lookAt = true;
-		currentCelestialBody = universe.getPlanets().get(index);
-		cameraPosition = currentCelestialBody.getLightPosition();
-	}
-
-	public void setCameraAtSun() {
-		currentCelestialBody = universe.getSun();
-		cameraPosition.set(0, 0, -100);
-	}
-
-	public Universe getUniverse() {
-		return universe;
-	}
-
 	private void setupEnvironment() {
 		light = new PointLight();
-		light.intensity = 20000000;
+		light.intensity = 60000000;
 		light.setColor(1, 1, 1, 1);
 		light.setPosition(0, 0, 0);
 		environment.add(light);

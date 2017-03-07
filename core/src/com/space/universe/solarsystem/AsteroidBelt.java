@@ -32,19 +32,26 @@ public class AsteroidBelt {
 
 	private void buildBelt() {
 		int index = 1;
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 400; i++) {
+
 			int pos = rand.nextInt(table.length - 1);
-			float dis = rand.nextFloat() + 2;
-			CelestialBody asteroid = new CelestialBody(FILENAME + index, (float) rand.nextDouble() + rand.nextInt(2), 0, 0, 0, 0);
-			asteroid.setPosition(table[pos][0] * dis, table[pos][1] * dis, table[pos][2] * dis);
-			asteroid.setRotationVector(rand.nextInt(2), rand.nextInt(2), rand.nextInt(2));
-			belt.add(asteroid);
+			float distance = rand.nextFloat() + 2;
+			float scale = (float) rand.nextDouble() + rand.nextInt(2);
+
+			CelestialBody asteroid = new CelestialBody(FILENAME + index, scale, distance, 0, 0, 0);
+
+			asteroid.setPosition(table[pos][0] * distance, table[pos][1] * distance, table[pos][2] * distance);
+			asteroid.setRotationVector(rand.nextInt(2), rand.nextInt(2), rand.nextInt(2), (float) rand.nextDouble() + rand.nextInt(5));
+
+			// belt.add(asteroid);
 
 			if (index < 5)
 				index++;
 			else
 				index = 1;
 		}
+
+		belt.add(new CelestialBody("asteroids/Ceres", 2f, 2.5f, 0, 0, 0));
 	}
 
 	public ArrayList<CelestialBody> getAsteroidBelt() {

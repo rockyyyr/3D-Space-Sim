@@ -1,6 +1,7 @@
 package com.space;
 
 import java.text.DecimalFormat;
+import java.time.Year;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,11 +19,20 @@ import com.space.util.Font;
  */
 public class Hud {
 
+	public static int CURRENT_YEAR = Year.now().getValue();
 	public static final String NEWLINE = System.lineSeparator();
+
+	public static final String DEJAVU_ITALIC = "fonts/DEJAVUSANSMONO-OBLIQUE.TTF";
+	public static final String DEJAVU = "fonts/DEJAVUSANSMONO.TTF";
+
+	public static final String PLANET_DATA_TEXT = "Distance: %s AU%nDiameter: %s x Earth";
+
 	private static final String HELP = ""
 			+ "Q - jump to next planet" + NEWLINE
 			+ "A - jump to previous planet" + NEWLINE
 			+ "W - jump to sun" + NEWLINE
+			+ "X - accelerate orbits" + NEWLINE
+			+ "Z - decelerate orbits" + NEWLINE
 			+ "T - toggle orbits" + NEWLINE
 			+ "S - toggle night sky" + NEWLINE
 			+ "D - toggle planet data" + NEWLINE
@@ -39,16 +49,18 @@ public class Hud {
 	private Stage stageData;
 	private CelestialBody currentCelestialBody;
 
-	private BitmapFont font;
-	private BitmapFont font30;
-	private BitmapFont fontItalic;
+	private BitmapFont font14;
+	private BitmapFont font20;
+	private BitmapFont fontItalic64;
 
 	private Label helpContext;
 	private Label planetData;
 	private Label planetNameData;
-	private LabelStyle style;
-	private LabelStyle style30;
-	private LabelStyle styleItalic;
+	private Label yearContext;
+	private Label yearLabel;
+	private LabelStyle style14;
+	private LabelStyle style20;
+	private LabelStyle styleItalic64;
 
 	private float x, y;
 	private boolean helpExpanded;
@@ -63,7 +75,7 @@ public class Hud {
 		x = (-camera.viewportWidth / 2) + 15;
 		y = (-camera.viewportHeight / 2) + 15;
 
-		helpExpanded = true;
+		helpExpanded = false;
 		dataExpanded = true;
 
 		setupFonts();
@@ -78,6 +90,67 @@ public class Hud {
 			generatePlanetLabel();
 			displayPlanetDataContext();
 		}
+	}
+
+	private void setupFonts() {
+		font14 = Font.generateFont(DEJAVU, 14);
+		font20 = Font.generateFont(DEJAVU, 20);
+		fontItalic64 = Font.generateFont(DEJAVU_ITALIC, 64);
+
+		style14 = new LabelStyle();
+		style14.font = font14;
+
+		styleItalic64 = new LabelStyle();
+		styleItalic64.font = fontItalic64;
+
+		style20 = new LabelStyle();
+		style20.font = font20;
+	}
+
+	private void setupHelpLabel() {
+		helpContext = new Label(HELP, style14);
+		helpContext.setPosition(20, 20);
+		stageHelp.addActor(helpContext);
+	}
+
+	private String generatePlanetData() {
+		DecimalFormat df = new DecimalFormat("#.##");
+
+		String distance = df.format(currentCelestialBody.getDistance() / Universe.AU);
+		String scale = df.format(currentCelestialBody.getScale());
+
+		return String.format(PLANET_DATA_TEXT, distance, scale);
+	}
+
+	private String generatePlanetName() {
+		return currentCelestialBody.getName();
+	}
+
+	private void generatePlanetLabel() {
+		if (!ready) {
+			planetNameData = new Label(generatePlanetName(), styleItalic64);
+			planetNameData.setPosition(20, camera.viewportHeight - 100);
+
+			planetData = new Label(generatePlanetData(), style20);
+			planetData.setPosition(20, camera.viewportHeight - 160);
+
+			yearContext = new Label(String.valueOf(CURRENT_YEAR), styleItalic64);
+			yearContext.setPosition(camera.viewportWidth - 200, camera.viewportHeight - 100);
+
+			yearLabel = new Label("Year", style20);
+			yearLabel.setPosition(camera.viewportWidth - 260, camera.viewportHeight - 60);
+
+			ready = true;
+		}
+
+		planetNameData.setText(generatePlanetName());
+		planetData.setText(generatePlanetData());
+		yearContext.setText(String.valueOf(CURRENT_YEAR));
+
+		stageData.addActor(planetNameData);
+		stageData.addActor(planetData);
+		stageData.addActor(yearContext);
+		stageData.addActor(yearLabel);
 	}
 
 	public void toggleHelpContext() {
@@ -100,60 +173,9 @@ public class Hud {
 		stageData.draw();
 	}
 
-	private void setupFonts() {
-		font = Font.generateFont("DEJAVUSANSMONO.TTF", 14);
-		fontItalic = Font.generateFont("DEJAVUSANSMONO-OBLIQUE.TTF", 64);
-		font30 = Font.generateFont("DEJAVUSANSMONO.TTF", 20);
-
-		style = new LabelStyle();
-		style.font = font;
-
-		styleItalic = new LabelStyle();
-		styleItalic.font = fontItalic;
-
-		style30 = new LabelStyle();
-		style30.font = font30;
-	}
-
-	private void setupHelpLabel() {
-		helpContext = new Label(HELP, style);
-		helpContext.setPosition(20, 20);
-		stageHelp.addActor(helpContext);
-	}
-
-	private String generatePlanetData() {
-		DecimalFormat df = new DecimalFormat("#.##");
-
-		String distance = df.format(currentCelestialBody.getDistance() / Universe.AU);
-		String scale = df.format(currentCelestialBody.getScale());
-
-		return String.format("AU: %s%nDiameter: %s", distance, scale);
-	}
-
-	private String generatePlanetName() {
-		return currentCelestialBody.getName();
-	}
-
-	private void generatePlanetLabel() {
-		if (!ready) {
-			planetNameData = new Label(generatePlanetName(), styleItalic);
-			planetData = new Label(generatePlanetData(), style30);
-			ready = true;
-		}
-
-		planetNameData.setText(generatePlanetName());
-		planetNameData.setPosition(20, camera.viewportHeight - 100);
-
-		planetData.setText(generatePlanetData());
-		planetData.setPosition(20, (camera.viewportHeight) - 160);
-
-		stageData.addActor(planetNameData);
-		stageData.addActor(planetData);
-	}
-
 	public void dispose() {
-		font.dispose();
-		fontItalic.dispose();
+		font14.dispose();
+		fontItalic64.dispose();
 		stageHelp.dispose();
 	}
 }

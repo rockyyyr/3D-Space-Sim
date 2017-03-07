@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.space.Hud;
 import com.space.universe.solarsystem.AsteroidBelt;
 import com.space.universe.solarsystem.CelestialBody;
 import com.space.universe.solarsystem.Moon;
@@ -15,17 +16,14 @@ import com.space.universe.solarsystem.Sun;
 import com.space.util.AttributeReader;
 
 /**
- * Universe.
+ * This class stores all entities in the simulation
  */
 public class Universe {
 
-	public static boolean LOADED = false;
-
 	private AssetManager assets;
 
-	public static final String PRINT = "%-16s%-10.2f%5.2f";
-	public static final float AU = 100;
-	public static final float ORBIT_VELOCITY = 0.25f;
+	public static final float AU = 250;
+	public static float ORBITAL_VELOCITY = 0.2f;
 
 	private ArrayList<Planet> planets;
 	private AsteroidBelt asteroidBelt;
@@ -34,6 +32,7 @@ public class Universe {
 
 	public boolean orbiting;
 	public boolean visibleSky;
+	public boolean passedZero;
 
 	public Universe() {
 		assets = new AssetManager();
@@ -48,13 +47,18 @@ public class Universe {
 
 		populatePlanetArray();
 		buildModels();
-
-		LOADED = true;
-		System.out.println("loaded");
 	}
 
+	/**
+	 * Renders entities and advances entity orbits
+	 * 
+	 * @param batch
+	 *            ModelBatch used for rendering
+	 * @param environment
+	 */
 	public void render(ModelBatch batch, Environment environment) {
 		sun.render(batch, environment);
+
 		if (visibleSky)
 			sky.render(batch, environment);
 
@@ -68,6 +72,8 @@ public class Universe {
 					if (orbiting) {
 						advanceOrbit(planet, moon);
 						advanceOrbit(planet, moon);
+						advanceOrbit(planet, moon);
+						advanceOrbit(planet, moon);
 					}
 					moon.render(batch, environment);
 				}
@@ -78,43 +84,6 @@ public class Universe {
 			if (orbiting)
 				advanceOrbit(sun, asteroid);
 			asteroid.render(batch, environment);
-		}
-	}
-
-	private void advanceOrbit(CelestialBody host, CelestialBody orbital) {
-		Vector3 hostPos = new Vector3(host.getPosition());
-		Vector3 orbitalPos = new Vector3(orbital.getPosition());
-		Vector3 posDiff = hostPos.sub(orbitalPos);
-
-		double angle = Math.atan2(posDiff.z, posDiff.x);
-
-		float forceX = ORBIT_VELOCITY * (float) Math.sin(angle);
-		float forceZ = ORBIT_VELOCITY * (float) Math.cos(angle);
-
-		orbital.advanceOrbit(new Vector3(-forceX, 0, forceZ));
-	}
-
-	private void populatePlanetArray() {
-		try {
-			planets = AttributeReader.fetchPlanets();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void buildModels() {
-		for (Planet planet : planets) {
-			planet.buildModel(assets);
-
-			if (planet.hasMoon()) {
-				for (Moon moon : planet.getMoons()) {
-					moon.buildModel(assets);
-				}
-			}
-		}
-
-		for (CelestialBody asteroid : asteroidBelt.getAsteroidBelt()) {
-			asteroid.buildModel(assets);
 		}
 	}
 
@@ -132,6 +101,70 @@ public class Universe {
 
 	public void toggleSky() {
 		visibleSky = !visibleSky;
+	}
+
+	public void accelerateOrbits() {
+		ORBITAL_VELOCITY += 2;
+	}
+
+	public void decelerateOrbits() {
+		if (ORBITAL_VELOCITY - 2 > 0)
+			ORBITAL_VELOCITY -= 2;
+	}
+
+	private void advanceOrbit(CelestialBody host, CelestialBody orbital) {
+		double angle = Math.atan2(orbital.getPosition().z - host.getPosition().z, orbital.getPosition().x - host.getPosition().x);
+
+		angle += ORBITAL_VELOCITY / orbital.getDistance();
+
+		if (orbital.getName().equals("Earth")) {
+			checkForYearAdvancement(angle);
+		}
+
+		float forceX = ((orbital.getDistance() * (float) Math.cos(angle)) + host.getPosition().x);
+		float forceZ = ((orbital.getDistance() * (float) Math.sin(angle)) + host.getPosition().z);
+
+		orbital.advanceOrbit(new Vector3(forceX, 0, forceZ));
+	}
+
+	/*
+	 * If angle passes zero, advance the year by one
+	 */
+	private void checkForYearAdvancement(double angle) {
+		if (!passedZero && angle > 0) {
+			Hud.CURRENT_YEAR++;
+			passedZero = true;
+		}
+
+		if (passedZero && angle < 0)
+			passedZero = false;
+	}
+
+	private void populatePlanetArray() {
+		try {
+			planets = AttributeReader.fetchPlanets();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/*
+	 * Load assets for all bodies
+	 */
+	private void buildModels() {
+		for (Planet planet : planets) {
+			planet.buildModel(assets);
+
+			if (planet.hasMoon()) {
+				for (Moon moon : planet.getMoons()) {
+					moon.buildModel(assets);
+				}
+			}
+		}
+
+		for (CelestialBody asteroid : asteroidBelt.getAsteroidBelt()) {
+			asteroid.buildModel(assets);
+		}
 	}
 
 	public void dispose() {

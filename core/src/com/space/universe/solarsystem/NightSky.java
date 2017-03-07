@@ -44,12 +44,12 @@ public class NightSky {
 
 	protected void buildModel() {
 		assets = new AssetManager();
-		assets.load("data/" + NAME + ".g3dj", Model.class);
+		assets.load("entities/" + NAME + ".g3dj", Model.class);
 		loading = true;
 	}
 
 	protected void doneLoading() {
-		model = assets.get("data/" + NAME + ".g3dj", Model.class);
+		model = assets.get("entities/" + NAME + ".g3dj", Model.class);
 		modelInstance = new ModelInstance(model, position);
 		modelInstance.transform.scl(SCALE);
 		loading = false;
