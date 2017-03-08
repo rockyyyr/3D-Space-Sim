@@ -24,6 +24,7 @@ public class Universe {
 
 	public static final float AU = 250;
 	public static float ORBITAL_VELOCITY = 0.2f;
+	public static final float UNIVERSAL_SCALE = 1.5f;
 
 	private ArrayList<Planet> planets;
 	private AsteroidBelt asteroidBelt;

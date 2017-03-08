@@ -101,7 +101,7 @@ public class CelestialBody {
 	protected void doneLoading() {
 		model = assets.get("entities/" + NAME + ".g3dj", Model.class);
 		modelInstance = new ModelInstance(model, planetPosition);
-		applyPlanetaryScaling(SCALE);
+		applyPlanetaryScaling(SCALE * Universe.UNIVERSAL_SCALE);
 		applyPlanetaryTilt(TILT);
 		loading = false;
 	}

@@ -1,7 +1,6 @@
 package com.space;
 
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.FPSLogger;
 
 /**
  * Simulation.
@@ -11,12 +10,9 @@ public class Simulation implements Screen {
 	private Hud hud;
 	private UniverseRenderer renderer;
 
-	private FPSLogger logger;
-
 	public Simulation() {
 		hud = new Hud();
 		renderer = new UniverseRenderer(hud);
-		logger = new FPSLogger();
 	}
 
 	/*
@@ -35,7 +31,6 @@ public class Simulation implements Screen {
 	public void render(float delta) {
 		renderer.render();
 		hud.render();
-		logger.log();
 	}
 
 	/*

@@ -1,11 +1,11 @@
 Planet    |Name     |Scale    |Distance 
 Earth     |EarthMoon|0.277    |0.0757  
-Jupiter   |Io       |0.2      |0.1657
-Jupiter   |IcyMoon1 |0.2      |0.2
+Jupiter   |Io       |0.3      |0.1
+Jupiter   |IcyMoon1 |0.4      |0.15
+Jupiter   |Europa   |0.3      |0.2
 Jupiter   |IcyMoon1 |0.2      |0.25
-Jupiter   |IcyMoon1 |0.2      |0.3
-Saturn    |IcyMoon2 |0.2      |0.165
+Saturn    |IcyMoon2 |0.4      |0.1
+Saturn    |IcyMoon2 |0.3      |0.15
 Saturn    |IcyMoon2 |0.2      |0.2
 Saturn    |IcyMoon2 |0.2      |0.25
-Saturn    |IcyMoon2 |0.2      |0.3
-Pluto     |IcyMoon5 |0.2      |0.07
+Pluto     |IcyMoon5 |0.3      |0.07
