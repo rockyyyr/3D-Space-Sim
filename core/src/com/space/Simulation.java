@@ -2,6 +2,7 @@ package com.space;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 
 /**
@@ -12,9 +13,12 @@ public class Simulation implements Screen {
 	private Hud hud;
 	private UniverseRenderer renderer;
 
+	private FPSLogger logger;
+
 	public Simulation() {
 		hud = new Hud();
 		renderer = new UniverseRenderer(hud);
+		logger = new FPSLogger();
 	}
 
 	/*
@@ -36,9 +40,10 @@ public class Simulation implements Screen {
 		// Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT |
 				(Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
-		// DefaultShader.defaultCullFace = 0;
+
 		renderer.render();
 		hud.render();
+		logger.log();
 	}
 
 	/*
@@ -79,7 +84,12 @@ public class Simulation implements Screen {
 	 */
 	@Override
 	public void dispose() {
+		hud.dispose();
 		renderer.dispose();
+	}
+
+	public UniverseRenderer getRenderer() {
+		return renderer;
 	}
 
 }

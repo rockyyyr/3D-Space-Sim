@@ -1,5 +1,7 @@
 package com.space.util;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
@@ -16,6 +18,7 @@ public class InputHandler extends CameraInputController {
 	private Hud hud;
 
 	private static int index = -1;
+	private Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
 
 	public InputHandler(PerspectiveCamera camera, UniverseRenderer renderer, Hud hud) {
 		super(camera);
@@ -53,23 +56,17 @@ public class InputHandler extends CameraInputController {
 		case Keys.S:
 			renderer.getUniverse().toggleSky();
 			break;
-		case Keys.UP:
-			camera.translate(0, 5, 0);
-			break;
-		case Keys.DOWN:
-			camera.translate(0, -5, 0);
-			break;
-		case Keys.LEFT:
-			camera.translate(-5, 0, 0);
-			break;
-		case Keys.RIGHT:
-			camera.translate(5, 0, 0);
+		case Keys.TAB:
+			toggleFullScreen();
 			break;
 		case Keys.Z:
 			renderer.getUniverse().decelerateOrbits();
 			break;
 		case Keys.X:
 			renderer.getUniverse().accelerateOrbits();
+			break;
+		case Keys.ESCAPE:
+			shutDown();
 			break;
 		}
 		return true;
@@ -96,6 +93,18 @@ public class InputHandler extends CameraInputController {
 
 	private void resetIndex() {
 		index = 0;
+	}
+
+	private void toggleFullScreen() {
+		if (Gdx.graphics.isFullscreen()) {
+			Gdx.graphics.setWindowedMode(currentMode.width, currentMode.height);
+		} else {
+			Gdx.graphics.setFullscreenMode(currentMode);
+		}
+	}
+
+	private void shutDown() {
+		System.exit(0);
 	}
 
 }

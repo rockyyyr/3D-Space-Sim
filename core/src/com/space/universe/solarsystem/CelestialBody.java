@@ -80,7 +80,7 @@ public class CelestialBody {
 			modelInstance.transform.rotate(rotationVector, rotationVelocity);
 			batch.render(modelInstance, environment);
 		}
-		// debugLights(batch);
+		// debugCameraPositions(batch);
 	}
 
 	public void buildModel(AssetManager assets) {
@@ -204,7 +204,7 @@ public class CelestialBody {
 	}
 
 	public void dispose() {
-		model.dispose();
-		assets.dispose();
+		// model.dispose();
+		// assets.dispose();
 	}
 }

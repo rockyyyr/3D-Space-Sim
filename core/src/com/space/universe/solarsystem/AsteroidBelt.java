@@ -12,6 +12,7 @@ import com.space.util.AttributeReader;
 public class AsteroidBelt {
 
 	public static final String FILENAME = "asteroids/Asteroid";
+	public static final int NUM_OF_ASTEROIDS = 125;
 
 	private ArrayList<CelestialBody> belt;
 	private float[][] table;
@@ -32,7 +33,7 @@ public class AsteroidBelt {
 
 	private void buildBelt() {
 		int index = 1;
-		for (int i = 0; i < 400; i++) {
+		for (int i = 0; i < NUM_OF_ASTEROIDS; i++) {
 
 			int pos = rand.nextInt(table.length - 1);
 			float distance = rand.nextFloat() + 2;
@@ -43,7 +44,7 @@ public class AsteroidBelt {
 			asteroid.setPosition(table[pos][0] * distance, table[pos][1] * distance, table[pos][2] * distance);
 			asteroid.setRotationVector(rand.nextInt(2), rand.nextInt(2), rand.nextInt(2), (float) rand.nextDouble() + rand.nextInt(5));
 
-			// belt.add(asteroid);
+			belt.add(asteroid);
 
 			if (index < 5)
 				index++;

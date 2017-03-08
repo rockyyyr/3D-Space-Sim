@@ -65,8 +65,7 @@ public class Sun extends CelestialBody {
 
 	@Override
 	public void dispose() {
-		model.dispose();
-		assets.dispose();
+		// model.dispose();
 	}
 
 }

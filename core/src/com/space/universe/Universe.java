@@ -44,9 +44,14 @@ public class Universe {
 		visibleSky = true;
 
 		sun.buildModel(assets);
+		sky.buildModel(assets);
 
 		populatePlanetArray();
 		buildModels();
+	}
+
+	public AssetManager getAssetManager() {
+		return assets;
 	}
 
 	/**
@@ -169,10 +174,10 @@ public class Universe {
 
 	public void dispose() {
 		assets.dispose();
-		sun.dispose();
-		sky.dispose();
-		for (Planet planet : planets)
-			planet.dispose();
+		// sun.dispose();
+		// sky.dispose();
+		// for (Planet planet : planets)
+		// planet.dispose();
 	}
 
 }

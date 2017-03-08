@@ -25,7 +25,6 @@ public class NightSky {
 	public NightSky() {
 		position = new Vector3(0, 0, 0);
 
-		buildModel();
 	}
 
 	public void render(ModelBatch batch, Environment environment) {
@@ -42,8 +41,8 @@ public class NightSky {
 		return position;
 	}
 
-	protected void buildModel() {
-		assets = new AssetManager();
+	public void buildModel(AssetManager assets) {
+		this.assets = assets;
 		assets.load("entities/" + NAME + ".g3dj", Model.class);
 		loading = true;
 	}
@@ -56,8 +55,7 @@ public class NightSky {
 	}
 
 	public void dispose() {
-		model.dispose();
-		assets.dispose();
+		// model.dispose();
 	}
 
 }

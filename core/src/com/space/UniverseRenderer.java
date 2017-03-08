@@ -42,6 +42,9 @@ public class UniverseRenderer {
 
 		setupCamera();
 		setupEnvironment();
+
+		inputHandler = new InputHandler(camera, this, hud);
+		Gdx.input.setInputProcessor(inputHandler);
 	}
 
 	public void render() {
@@ -86,8 +89,6 @@ public class UniverseRenderer {
 
 	private void setupCamera() {
 		camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		inputHandler = new InputHandler(camera, this, hud);
-		Gdx.input.setInputProcessor(inputHandler);
 
 		camera.near = 0.1f;
 		camera.far = 30000000f;

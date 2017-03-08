@@ -1,14 +1,15 @@
 package com.space;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.physics.bullet.Bullet;
 
 public class SpaceSim extends Game {
 
+	private Simulation simulation;
+
 	@Override
 	public void create() {
-		Bullet.init();
-		setScreen(new Simulation());
+		simulation = new Simulation();
+		setScreen(new LoadingScreen(SpaceSim.this, simulation));
 	}
 
 	@Override
@@ -18,5 +19,7 @@ public class SpaceSim extends Game {
 
 	@Override
 	public void dispose() {
+		super.dispose();
+		simulation.dispose();
 	}
 }

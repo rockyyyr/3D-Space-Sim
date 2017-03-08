@@ -37,6 +37,8 @@ public class Hud {
 			+ "S - toggle night sky" + NEWLINE
 			+ "D - toggle planet data" + NEWLINE
 			+ "H - toggle help context" + NEWLINE
+			+ "Tab - toggle fullscreen" + NEWLINE
+			+ "Esc - exit" + NEWLINE
 			+ NEWLINE
 			+ "Mouse wheel - zoom in/out" + NEWLINE
 			+ "Right click - rotate camera" + NEWLINE
@@ -75,7 +77,7 @@ public class Hud {
 		x = (-camera.viewportWidth / 2) + 15;
 		y = (-camera.viewportHeight / 2) + 15;
 
-		helpExpanded = false;
+		helpExpanded = true;
 		dataExpanded = true;
 
 		setupFonts();
@@ -109,7 +111,7 @@ public class Hud {
 
 	private void setupHelpLabel() {
 		helpContext = new Label(HELP, style14);
-		helpContext.setPosition(20, 20);
+		helpContext.setPosition(20, 50);
 		stageHelp.addActor(helpContext);
 	}
 
