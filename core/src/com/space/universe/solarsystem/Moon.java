@@ -1,32 +1,24 @@
 package com.space.universe.solarsystem;
 
-import java.io.IOException;
 import java.util.Random;
 
 import com.space.universe.Universe;
-import com.space.util.AttributeReader;
+import com.space.util.OrbitTable;
 
 /**
  * Moon.
  */
-public class Moon extends CelestialBody {
-
-	public static final float ORBIT_VELOCITY = 1f;
+public class Moon extends CosmicObject {
 
 	private float[][] table;
-
 	private float distanceFromHost;
 
 	public Moon(String name, float scale, float distanceFromHost, float orbitalPeriod, float tilt, float lightDistanceFromPlanet, Planet host) {
 		super(name, scale, (host.DISTANCE + (Universe.AU * distanceFromHost)) / Universe.AU, orbitalPeriod, tilt, lightDistanceFromPlanet);
 		this.distanceFromHost = distanceFromHost;
 
-		try {
-			table = AttributeReader.getOrbitTable();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		table = OrbitTable.getTable();
+		
 		setRandomPosition();
 	}
 

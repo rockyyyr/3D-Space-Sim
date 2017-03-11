@@ -15,7 +15,7 @@ public class Font {
 	}
 
 	/**
-	 * Generate a bitmap font from a TTF file
+	 * Generate a white bitmap font from a TTF file
 	 * 
 	 * @param fontFileName
 	 * @param size
@@ -33,7 +33,7 @@ public class Font {
 	}
 
 	/**
-	 * Generate a bitmap font from a TTF file
+	 * Generate a bitmap font from a TTF file in the specified color
 	 * 
 	 * @param fontFileName
 	 * @param size

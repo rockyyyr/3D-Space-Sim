@@ -1,10 +1,9 @@
 package com.space.universe.solarsystem;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.space.util.AttributeReader;
+import com.space.util.OrbitTable;
 
 /**
  * AsteroidBelt.
@@ -14,19 +13,15 @@ public class AsteroidBelt {
 	public static final String FILENAME = "asteroids/Asteroid";
 	public static final int NUM_OF_ASTEROIDS = 125;
 
-	private ArrayList<CelestialBody> belt;
+	private ArrayList<CosmicObject> belt;
 	private float[][] table;
 	private Random rand;
 
 	public AsteroidBelt() {
-		belt = new ArrayList<CelestialBody>();
+		belt = new ArrayList<CosmicObject>();
 		rand = new Random();
 
-		try {
-			table = AttributeReader.getOrbitTable();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		table = OrbitTable.getTable();
 
 		buildBelt();
 	}
@@ -39,7 +34,7 @@ public class AsteroidBelt {
 			float distance = rand.nextFloat() + 2;
 			float scale = (float) rand.nextDouble() + rand.nextInt(2);
 
-			CelestialBody asteroid = new CelestialBody(FILENAME + index, scale, distance, 0, 0, 0);
+			CosmicObject asteroid = new CosmicObject(FILENAME + index, scale, distance, 0, 0, 0);
 
 			asteroid.setPosition(table[pos][0] * distance, table[pos][1] * distance, table[pos][2] * distance);
 			asteroid.setRotationVector(rand.nextInt(2), rand.nextInt(2), rand.nextInt(2), (float) rand.nextDouble() + rand.nextInt(5));
@@ -52,10 +47,10 @@ public class AsteroidBelt {
 				index = 1;
 		}
 
-		belt.add(new CelestialBody("asteroids/Ceres", 2f, 2.5f, 0, 0, 0));
+		belt.add(new CosmicObject("asteroids/Ceres", 2f, 2.5f, 0, 0, 0));
 	}
 
-	public ArrayList<CelestialBody> getAsteroidBelt() {
+	public ArrayList<CosmicObject> getAsteroidBelt() {
 		return belt;
 	}
 

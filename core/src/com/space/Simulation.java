@@ -29,7 +29,7 @@ public class Simulation implements Screen {
 	 */
 	@Override
 	public void render(float delta) {
-		renderer.render();
+		renderer.render(delta);
 		hud.render();
 	}
 
