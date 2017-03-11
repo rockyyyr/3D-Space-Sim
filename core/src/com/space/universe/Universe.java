@@ -3,17 +3,19 @@ package com.space.universe;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.space.Hud;
 import com.space.universe.solarsystem.AsteroidBelt;
-import com.space.universe.solarsystem.CelestialBody;
+import com.space.universe.solarsystem.CosmicObject;
 import com.space.universe.solarsystem.Moon;
 import com.space.universe.solarsystem.NightSky;
 import com.space.universe.solarsystem.Planet;
 import com.space.universe.solarsystem.Sun;
 import com.space.util.AttributeReader;
+import com.space.util.OrbitPath;
 
 /**
  * This class stores all entities in the simulation
@@ -24,15 +26,18 @@ public class Universe {
 
 	public static final float AU = 250;
 	public static float ORBITAL_VELOCITY = 0.2f;
+	public static final float UNIVERSAL_SCALE = 1.5f;
 
 	private ArrayList<Planet> planets;
 	private AsteroidBelt asteroidBelt;
 	private Sun sun;
 	private NightSky sky;
 
-	public boolean orbiting;
-	public boolean visibleSky;
-	public boolean passedZero;
+	private boolean orbiting;
+	private boolean planetOrbitPathsVisible;
+	private boolean moonOrbitPathsVisible;
+	private boolean skyVisible;
+	private boolean passedZero;
 
 	public Universe() {
 		assets = new AssetManager();
@@ -41,27 +46,29 @@ public class Universe {
 		asteroidBelt = new AsteroidBelt();
 
 		orbiting = true;
-		visibleSky = true;
+		skyVisible = true;
 
 		sun.buildModel(assets);
+		sky.buildModel(assets);
 
 		populatePlanetArray();
 		buildModels();
 	}
 
-	/**
-	 * Renders entities and advances entity orbits
-	 * 
-	 * @param batch
-	 *            ModelBatch used for rendering
-	 * @param environment
-	 */
-	public void render(ModelBatch batch, Environment environment) {
-		sun.render(batch, environment);
+	public AssetManager getAssetManager() {
+		return assets;
+	}
 
-		if (visibleSky)
+	public void renderSky(ModelBatch batch, Environment environment) {
+		if (skyVisible)
 			sky.render(batch, environment);
+	}
 
+	public void renderSun(ModelBatch batch, Environment environment) {
+		sun.render(batch, environment);
+	}
+
+	public void renderPlanetsAndMoons(ModelBatch batch, Environment environment) {
 		for (Planet planet : planets) {
 			if (orbiting)
 				advanceOrbit(sun, planet);
@@ -79,11 +86,28 @@ public class Universe {
 				}
 			}
 		}
+	}
 
-		for (CelestialBody asteroid : asteroidBelt.getAsteroidBelt()) {
+	public void renderAsteroidBelt(ModelBatch batch, Environment environment) {
+		for (CosmicObject asteroid : asteroidBelt.getAsteroidBelt()) {
 			if (orbiting)
 				advanceOrbit(sun, asteroid);
 			asteroid.render(batch, environment);
+		}
+	}
+
+	public void renderOrbitPaths(Camera camera) {
+		for (Planet planet : getPlanets()) {
+			if (planetOrbitPathsVisible) {
+				OrbitPath.drawOrbitalPath(sun, planet, camera);
+			}
+			if (moonOrbitPathsVisible) {
+				if (planet.hasMoon()) {
+					for (Moon moon : planet.getMoons()) {
+						OrbitPath.drawOrbitalPath(planet, moon, camera);
+					}
+				}
+			}
 		}
 	}
 
@@ -91,7 +115,7 @@ public class Universe {
 		return planets;
 	}
 
-	public CelestialBody getSun() {
+	public CosmicObject getSun() {
 		return sun;
 	}
 
@@ -99,8 +123,16 @@ public class Universe {
 		orbiting = !orbiting;
 	}
 
+	public void togglePlanetOrbitPaths() {
+		planetOrbitPathsVisible = !planetOrbitPathsVisible;
+	}
+
+	public void toggleMoonOrbitPaths() {
+		moonOrbitPathsVisible = !moonOrbitPathsVisible;
+	}
+
 	public void toggleSky() {
-		visibleSky = !visibleSky;
+		skyVisible = !skyVisible;
 	}
 
 	public void accelerateOrbits() {
@@ -112,7 +144,7 @@ public class Universe {
 			ORBITAL_VELOCITY -= 2;
 	}
 
-	private void advanceOrbit(CelestialBody host, CelestialBody orbital) {
+	private void advanceOrbit(CosmicObject host, CosmicObject orbital) {
 		double angle = Math.atan2(orbital.getPosition().z - host.getPosition().z, orbital.getPosition().x - host.getPosition().x);
 
 		angle += ORBITAL_VELOCITY / orbital.getDistance();
@@ -162,17 +194,17 @@ public class Universe {
 			}
 		}
 
-		for (CelestialBody asteroid : asteroidBelt.getAsteroidBelt()) {
+		for (CosmicObject asteroid : asteroidBelt.getAsteroidBelt()) {
 			asteroid.buildModel(assets);
 		}
 	}
 
 	public void dispose() {
 		assets.dispose();
-		sun.dispose();
-		sky.dispose();
-		for (Planet planet : planets)
-			planet.dispose();
+		// sun.dispose();
+		// sky.dispose();
+		// for (Planet planet : planets)
+		// planet.dispose();
 	}
 
 }

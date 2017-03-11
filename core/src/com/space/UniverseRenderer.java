@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector3;
 import com.space.universe.Universe;
-import com.space.universe.solarsystem.CelestialBody;
+import com.space.universe.solarsystem.CosmicObject;
 import com.space.util.InputHandler;
 
 /**
@@ -27,10 +27,11 @@ public class UniverseRenderer {
 
 	private PointLight light;
 
-	private CelestialBody currentCelestialBody;
+	private CosmicObject currentCosmicObject;
 	private Vector3 cameraPosition;
-	public boolean translate;
-	public boolean lookAt;
+
+	private boolean translate;
+	private boolean lookAt;
 
 	public UniverseRenderer(Hud hud) {
 		environment = new Environment();
@@ -42,18 +43,34 @@ public class UniverseRenderer {
 
 		setupCamera();
 		setupEnvironment();
+
+		inputHandler = new InputHandler(camera, this, hud);
+		Gdx.input.setInputProcessor(inputHandler);
 	}
 
-	public void render() {
-		if (translate) {
-			camera.position.set(currentCelestialBody.getCameraPosition());
-			camera.lookAt(currentCelestialBody.getPosition());
-		}
+	public void render(float delta) {
 
+		if (translate)
+			camera.position.set(currentCosmicObject.getCameraPosition());
+
+		if (lookAt)
+			camera.lookAt(currentCosmicObject.getPosition());
+
+		inputHandler.update(delta);
 		camera.update();
+
 		batch.begin(camera);
-		universe.render(batch, environment);
+		universe.renderSky(batch, environment);
 		batch.end();
+
+		universe.renderOrbitPaths(camera);
+
+		batch.begin(camera);
+		universe.renderSun(batch, environment);
+		universe.renderPlanetsAndMoons(batch, environment);
+		universe.renderAsteroidBelt(batch, environment);
+		batch.end();
+
 	}
 
 	/**
@@ -63,18 +80,42 @@ public class UniverseRenderer {
 	 *            the index of the planet array
 	 */
 	public void setCameraAtPlanet(int index) {
-		currentCelestialBody = universe.getPlanets().get(index);
-		hud.setCurrentPlanet(currentCelestialBody);
-		cameraPosition = currentCelestialBody.getCameraPosition();
+		currentCosmicObject = universe.getPlanets().get(index);
+		hud.setCurrentPlanet(currentCosmicObject);
+		camera.position.set(currentCosmicObject.getCameraPosition());
 	}
 
 	/**
 	 * Sets the camera at the sun
 	 */
 	public void setCameraAtSun() {
-		currentCelestialBody = universe.getSun();
-		hud.setCurrentPlanet(currentCelestialBody);
-		camera.position.set(0, 0, 100);
+		releaseCamera();
+		currentCosmicObject = universe.getSun();
+		hud.setCurrentPlanet(currentCosmicObject);
+		camera.position.set(0, 0, 50);
+	}
+
+	/**
+	 * Allows user to control camera if it is locked to a planet
+	 */
+	public void releaseCamera() {
+		translate = false;
+		hud.unlockCamera();
+	}
+
+	/**
+	 * Locks the camera to a planet
+	 */
+	public void lockCamera() {
+		translate = true;
+		lookAt = true;
+		hud.lockCamera();
+		hud.lockLookAt();
+	}
+
+	public void toggleLookAtPlanet() {
+		hud.toggleLookAt();
+		lookAt = !lookAt;
 	}
 
 	/**
@@ -86,8 +127,6 @@ public class UniverseRenderer {
 
 	private void setupCamera() {
 		camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		inputHandler = new InputHandler(camera, this, hud);
-		Gdx.input.setInputProcessor(inputHandler);
 
 		camera.near = 0.1f;
 		camera.far = 30000000f;

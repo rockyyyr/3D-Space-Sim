@@ -3,14 +3,16 @@ package com.space.universe.solarsystem;
 import java.util.ArrayList;
 
 import com.space.util.AttributeReader;
+import com.space.util.OrbitPath;
 
 /**
  * Planet.
  */
-public class Planet extends CelestialBody {
+public class Planet extends CosmicObject {
 
 	private boolean hasMoon;
 	private ArrayList<Moon> moons;
+	private OrbitPath orbitPath;
 
 	public Planet(String name, float scale, float distanceFromSun, float orbitalPeriod, float tilt, float lightDistanceFromPlanet, boolean hasMoon) {
 		super(name, scale, distanceFromSun, orbitalPeriod, tilt, lightDistanceFromPlanet);

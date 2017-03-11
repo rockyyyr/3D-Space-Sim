@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 /**
  * Sun.
  */
-public class Sun extends CelestialBody {
+public class Sun extends CosmicObject {
 
 	private static final String NAME = "Sun";
 	private static final float SCALE = 18;
@@ -66,7 +66,6 @@ public class Sun extends CelestialBody {
 	@Override
 	public void dispose() {
 		model.dispose();
-		assets.dispose();
 	}
 
 }
