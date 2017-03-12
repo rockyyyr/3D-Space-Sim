@@ -8,7 +8,7 @@ import com.space.util.OrbitPath;
 /**
  * Planet.
  */
-public class Planet extends CosmicObject {
+public class Planet extends OrbitingCosmicObject {
 
 	private boolean hasMoon;
 	private ArrayList<Moon> moons;
@@ -16,6 +16,7 @@ public class Planet extends CosmicObject {
 
 	public Planet(String name, float scale, float distanceFromSun, float orbitalPeriod, float tilt, float lightDistanceFromPlanet, boolean hasMoon) {
 		super(name, scale, distanceFromSun, orbitalPeriod, tilt, lightDistanceFromPlanet);
+
 		this.hasMoon = hasMoon;
 		moons = new ArrayList<Moon>();
 

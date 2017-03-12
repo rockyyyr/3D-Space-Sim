@@ -7,10 +7,12 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.space.Hud;
+import com.space.universe.solarsystem.Asteroid;
 import com.space.universe.solarsystem.AsteroidBelt;
 import com.space.universe.solarsystem.CosmicObject;
 import com.space.universe.solarsystem.Moon;
 import com.space.universe.solarsystem.NightSky;
+import com.space.universe.solarsystem.OrbitingCosmicObject;
 import com.space.universe.solarsystem.Planet;
 import com.space.universe.solarsystem.Sun;
 import com.space.util.Assets;
@@ -22,15 +24,13 @@ import com.space.util.OrbitPath;
  */
 public class Universe {
 
-	private Assets assets;
-
 	public static final float AU = 250;
 	public static float ORBITAL_VELOCITY = 0.2f;
 	public static final float UNIVERSAL_SCALE = 1.5f;
 
 	private ArrayList<Planet> planets;
 	private AsteroidBelt asteroidBelt;
-	private Sun sun;
+	private CosmicObject sun;
 	private NightSky sky;
 
 	private boolean orbiting;
@@ -43,8 +43,6 @@ public class Universe {
 		sun = new Sun();
 		sky = new NightSky();
 		asteroidBelt = new AsteroidBelt();
-
-		this.assets = assets;
 
 		orbiting = true;
 		skyVisible = true;
@@ -83,7 +81,7 @@ public class Universe {
 	}
 
 	public void renderAsteroidBelt(ModelBatch batch, Environment environment) {
-		for (CosmicObject asteroid : asteroidBelt.getAsteroidBelt()) {
+		for (Asteroid asteroid : asteroidBelt.getAsteroidBelt()) {
 			if (orbiting)
 				advanceOrbit(sun, asteroid);
 			asteroid.render(batch, environment);
@@ -138,7 +136,7 @@ public class Universe {
 			ORBITAL_VELOCITY -= 2;
 	}
 
-	private void advanceOrbit(CosmicObject host, CosmicObject orbital) {
+	private void advanceOrbit(CosmicObject host, OrbitingCosmicObject orbital) {
 		double angle = Math.atan2(orbital.getPosition().z - host.getPosition().z, orbital.getPosition().x - host.getPosition().x);
 
 		angle += ORBITAL_VELOCITY / orbital.getDistance();
@@ -180,6 +178,7 @@ public class Universe {
 	private void buildModels(Assets assets) {
 		sun.buildModel(assets);
 		sky.buildModel(assets);
+
 		for (Planet planet : planets) {
 			planet.buildModel(assets);
 
@@ -190,7 +189,7 @@ public class Universe {
 			}
 		}
 
-		for (CosmicObject asteroid : asteroidBelt.getAsteroidBelt()) {
+		for (Asteroid asteroid : asteroidBelt.getAsteroidBelt()) {
 			asteroid.buildModel(assets);
 		}
 	}

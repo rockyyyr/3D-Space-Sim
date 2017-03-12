@@ -8,7 +8,7 @@ import com.space.util.OrbitTable;
 /**
  * Moon.
  */
-public class Moon extends CosmicObject {
+public class Moon extends OrbitingCosmicObject {
 
 	private float[][] table;
 	private float distanceFromHost;
@@ -18,7 +18,7 @@ public class Moon extends CosmicObject {
 		this.distanceFromHost = distanceFromHost;
 
 		table = OrbitTable.getTable();
-		
+
 		setRandomPosition();
 	}
 

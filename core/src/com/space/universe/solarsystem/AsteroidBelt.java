@@ -13,12 +13,12 @@ public class AsteroidBelt {
 	public static final String FILENAME = "Asteroid";
 	public static final int NUM_OF_ASTEROIDS = 125;
 
-	private ArrayList<CosmicObject> belt;
+	private ArrayList<Asteroid> belt;
 	private float[][] table;
 	private Random rand;
 
 	public AsteroidBelt() {
-		belt = new ArrayList<CosmicObject>();
+		belt = new ArrayList<Asteroid>();
 		rand = new Random();
 
 		table = OrbitTable.getTable();
@@ -34,7 +34,7 @@ public class AsteroidBelt {
 			float distance = rand.nextFloat() + 2;
 			float scale = (float) rand.nextDouble() + rand.nextInt(2);
 
-			CosmicObject asteroid = new CosmicObject(FILENAME + index, scale, distance, 0, 0, 0);
+			Asteroid asteroid = new Asteroid(FILENAME + index, scale, distance, 0, 0, 0);
 
 			asteroid.setPosition(table[pos][0] * distance, table[pos][1] * distance, table[pos][2] * distance);
 			asteroid.setRotationVector(rand.nextInt(2), rand.nextInt(2), rand.nextInt(2), (float) rand.nextDouble() + rand.nextInt(5));
@@ -47,10 +47,10 @@ public class AsteroidBelt {
 				index = 1;
 		}
 
-		belt.add(new CosmicObject("Ceres", 2f, 2.5f, 0, 0, 0));
+		belt.add(new Asteroid("Ceres", 2f, 2.5f, 0, 0, 0));
 	}
 
-	public ArrayList<CosmicObject> getAsteroidBelt() {
+	public ArrayList<Asteroid> getAsteroidBelt() {
 		return belt;
 	}
 
