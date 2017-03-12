@@ -146,7 +146,7 @@ public class InputHandler extends FirstPersonCameraController {
 	}
 
 	private void shutDown() {
-		System.exit(0);
+		Gdx.app.exit();
 	}
 
 }
