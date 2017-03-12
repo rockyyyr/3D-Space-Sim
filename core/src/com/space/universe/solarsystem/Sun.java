@@ -13,12 +13,14 @@ public class Sun extends CosmicObject {
 	private static final String NAME = "Sun";
 	private static final float SCALE = 18;
 	private static final float ROTATION = -0.75f;
-	private static final float ACTUAL_SCALE_FOR_HUD = 333000;
+	private static final float SCALE_FOR_HUD = 333000;
 
-	protected Vector3 position;
+	private Vector3 cameraPosition;
 
 	public Sun() {
 		super(NAME, SCALE);
+
+		cameraPosition = new Vector3(0, 0, 50);
 	}
 
 	@Override
@@ -29,13 +31,18 @@ public class Sun extends CosmicObject {
 
 	@Override
 	public float getScale() {
-		return ACTUAL_SCALE_FOR_HUD;
+		return SCALE_FOR_HUD;
 	}
 
 	@Override
 	public void buildModel(Assets assets) {
 		super.buildModel(assets);
 		applyScaling(SCALE);
+	}
+
+	@Override
+	public Vector3 getCameraPosition() {
+		return cameraPosition;
 	}
 
 }

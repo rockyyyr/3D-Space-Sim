@@ -14,6 +14,7 @@ public class CosmicObject {
 	protected final String NAME;
 	protected final float SCALE;
 	protected float DISTANCE;
+	protected float ROTATION = 1f;
 
 	protected Model model;
 	protected ModelInstance modelInstance;
@@ -30,7 +31,7 @@ public class CosmicObject {
 		position = new Vector3();
 
 		rotationVector = new Vector3(0, 1, 0);
-		rotationVelocity = 1f;
+		rotationVelocity = ROTATION;
 	}
 
 	public void render(ModelBatch batch, Environment environment) {

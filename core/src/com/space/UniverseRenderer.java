@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
-import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector3;
 import com.space.universe.Universe;
 import com.space.universe.solarsystem.CosmicObject;
@@ -24,7 +23,6 @@ public class UniverseRenderer {
 
 	private PerspectiveCamera camera;
 	private InputHandler inputHandler;
-	private CameraInputController cameraController;
 
 	private PointLight light;
 
