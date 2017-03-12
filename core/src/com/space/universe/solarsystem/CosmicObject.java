@@ -2,7 +2,6 @@ package com.space.universe.solarsystem;
 
 import java.util.Random;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g3d.Environment;
@@ -14,9 +13,12 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.space.universe.Universe;
+import com.space.util.Assets;
 import com.space.util.OrbitTable;
 
 public class CosmicObject {
+
+	public static final String EXTENSION = ".g3dj";
 
 	protected final String NAME;
 	protected final float SCALE;
@@ -24,9 +26,8 @@ public class CosmicObject {
 	protected final float ORBITAL_PERIOD;
 	protected final float TILT;
 
-	private Model model;
-	private ModelInstance modelInstance;
-	private AssetManager assets;
+	protected Model model;
+	protected ModelInstance modelInstance;
 
 	// Light position debugging
 	Model cameraModel;
@@ -68,22 +69,19 @@ public class CosmicObject {
 	}
 
 	public void render(ModelBatch batch, Environment environment) {
-		if (loading && assets.update())
-			doneLoading();
+		modelInstance.transform.setTranslation(planetPosition);
+		modelInstance.transform.rotate(rotationVector, rotationVelocity);
+		batch.render(modelInstance, environment);
 
-		if (modelInstance != null) {
-			modelInstance.transform.setTranslation(planetPosition);
-			modelInstance.transform.rotate(rotationVector, rotationVelocity);
-			batch.render(modelInstance, environment);
-		}
 		// debugCameraPositions(batch);
 
 	}
 
-	public void buildModel(AssetManager assets) {
-		this.assets = assets;
-		assets.load("entities/" + NAME + ".g3dj", Model.class);
-		loading = true;
+	public void buildModel(Assets assets) {
+		model = assets.get(NAME + EXTENSION);
+		modelInstance = new ModelInstance(model, planetPosition);
+		applyPlanetaryScaling(SCALE * Universe.UNIVERSAL_SCALE);
+		applyPlanetaryTilt(TILT);
 	}
 
 	public void advanceOrbit(Vector3 vector) {
@@ -93,14 +91,6 @@ public class CosmicObject {
 
 	private void advancecameraOrbit(Vector3 vector) {
 		cameraPosition.set(vector.x * cameraOrbitDifferential, 0, vector.z * cameraOrbitDifferential);
-	}
-
-	protected void doneLoading() {
-		model = assets.get("entities/" + NAME + ".g3dj", Model.class);
-		modelInstance = new ModelInstance(model, planetPosition);
-		applyPlanetaryScaling(SCALE * Universe.UNIVERSAL_SCALE);
-		applyPlanetaryTilt(TILT);
-		loading = false;
 	}
 
 	private int generateRandomIntForOrbitTable() {
@@ -193,7 +183,6 @@ public class CosmicObject {
 	}
 
 	public void dispose() {
-		// model.dispose();
-		// assets.dispose();
+		model.dispose();
 	}
 }

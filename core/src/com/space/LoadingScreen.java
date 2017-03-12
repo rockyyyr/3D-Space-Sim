@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.space.util.Assets;
 import com.space.util.Font;
 
 /**
@@ -23,7 +24,7 @@ public class LoadingScreen implements Screen {
 	public static final double LOADING_DELAY = 400;
 
 	private Game game;
-	private Simulation screen;
+	private Assets assets;
 
 	private Stage stage;
 
@@ -34,9 +35,9 @@ public class LoadingScreen implements Screen {
 	private Instant start;
 	private int index;
 
-	public LoadingScreen(Game game, Simulation screen) {
+	public LoadingScreen(Game game, Assets assets) {
 		this.game = game;
-		this.screen = screen;
+		this.assets = assets;
 
 		stage = new Stage();
 	}
@@ -91,9 +92,8 @@ public class LoadingScreen implements Screen {
 	 * Switches to the simulation screen when all assets are done loading
 	 */
 	private void checkLoadingStatus(float delta) {
-		if (screen.getRenderer().getUniverse().getAssetManager().update()) {
-			screen.render(delta);
-			game.setScreen(screen);
+		if (assets.update()) {
+			game.setScreen(new Simulation(assets));
 		}
 	}
 

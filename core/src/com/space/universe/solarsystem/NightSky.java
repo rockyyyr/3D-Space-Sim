@@ -1,61 +1,46 @@
 package com.space.universe.solarsystem;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
+import com.space.util.Assets;
 
 /**
  * NightSky.
  */
-public class NightSky {
+public class NightSky extends CosmicObject {
 
 	private static final String NAME = "MilkyWay";
 	private static final float SCALE = 1000;
+	private static final float ROTATION = 0.0075f;
 
 	protected Model model;
 	protected ModelInstance modelInstance;
-	protected AssetManager assets;
 
 	protected Vector3 position;
-	protected boolean loading;
 
 	public NightSky() {
+		super(NAME, SCALE, 0, 0, 0, 0);
 		position = new Vector3(0, 0, 0);
-
 	}
 
+	@Override
 	public void render(ModelBatch batch, Environment environment) {
-		if (loading && assets.update())
-			doneLoading();
-
-		if (modelInstance != null) {
-			modelInstance.transform.rotate(0, 1, 0, 0.0075f);
-			batch.render(modelInstance);
-		}
+		modelInstance.transform.rotate(0, 1, 0, ROTATION);
+		batch.render(modelInstance);
 	}
 
+	@Override
+	public void buildModel(Assets assets) {
+		model = assets.get(NAME + ".g3dj");
+		modelInstance = new ModelInstance(model, position);
+		modelInstance.transform.scl(SCALE);
+	}
+
+	@Override
 	public Vector3 getPosition() {
 		return position;
 	}
-
-	public void buildModel(AssetManager assets) {
-		this.assets = assets;
-		assets.load("entities/" + NAME + ".g3dj", Model.class);
-		loading = true;
-	}
-
-	protected void doneLoading() {
-		model = assets.get("entities/" + NAME + ".g3dj", Model.class);
-		modelInstance = new ModelInstance(model, position);
-		modelInstance.transform.scl(SCALE);
-		loading = false;
-	}
-
-	public void dispose() {
-		// model.dispose();
-	}
-
 }

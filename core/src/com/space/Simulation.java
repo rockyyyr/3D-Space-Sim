@@ -1,6 +1,7 @@
 package com.space;
 
 import com.badlogic.gdx.Screen;
+import com.space.util.Assets;
 
 /**
  * Simulation.
@@ -10,9 +11,9 @@ public class Simulation implements Screen {
 	private Hud hud;
 	private UniverseRenderer renderer;
 
-	public Simulation() {
+	public Simulation(Assets assets) {
 		hud = new Hud();
-		renderer = new UniverseRenderer(hud);
+		renderer = new UniverseRenderer(hud, assets);
 	}
 
 	/*

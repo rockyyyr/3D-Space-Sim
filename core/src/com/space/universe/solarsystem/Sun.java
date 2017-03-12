@@ -1,11 +1,10 @@
 package com.space.universe.solarsystem;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
+import com.space.util.Assets;
 
 /**
  * Sun.
@@ -14,29 +13,20 @@ public class Sun extends CosmicObject {
 
 	private static final String NAME = "Sun";
 	private static final float SCALE = 18;
-
-	protected Model model;
-	protected ModelInstance modelInstance;
-	protected AssetManager assets;
+	private static final float ROTATION = -0.75f;
+	private static final float ACTUAL_SCALE_FOR_HUD = 333000;
 
 	protected Vector3 position;
-	protected boolean loading;
 
 	public Sun() {
 		super(NAME, SCALE, 0, 0, 0, 0);
 		position = new Vector3(0, 0, 0);
-		buildModel();
 	}
 
 	@Override
 	public void render(ModelBatch batch, Environment environment) {
-		if (loading && assets.update())
-			doneLoading();
-
-		if (modelInstance != null) {
-			modelInstance.transform.rotate(0, 1, 0, -0.75f);
-			batch.render(modelInstance);
-		}
+		modelInstance.transform.rotate(0, 1, 0, ROTATION);
+		batch.render(modelInstance);
 	}
 
 	@Override
@@ -46,26 +36,14 @@ public class Sun extends CosmicObject {
 
 	@Override
 	public float getScale() {
-		return 333000;
-	}
-
-	protected void buildModel() {
-		assets = new AssetManager();
-		assets.load("entities/" + NAME + ".g3dj", Model.class);
-		loading = true;
+		return ACTUAL_SCALE_FOR_HUD;
 	}
 
 	@Override
-	protected void doneLoading() {
-		model = assets.get("entities/" + NAME + ".g3dj", Model.class);
+	public void buildModel(Assets assets) {
+		model = assets.get(NAME + EXTENSION);
 		modelInstance = new ModelInstance(model, position);
 		modelInstance.transform.scl(SCALE);
-		loading = false;
-	}
-
-	@Override
-	public void dispose() {
-		model.dispose();
 	}
 
 }

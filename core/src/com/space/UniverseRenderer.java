@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector3;
 import com.space.universe.Universe;
 import com.space.universe.solarsystem.CosmicObject;
+import com.space.util.Assets;
 import com.space.util.InputHandler;
 
 /**
@@ -33,9 +34,9 @@ public class UniverseRenderer {
 	private boolean translate;
 	private boolean lookAt;
 
-	public UniverseRenderer(Hud hud) {
+	public UniverseRenderer(Hud hud, Assets assets) {
 		environment = new Environment();
-		universe = new Universe();
+		universe = new Universe(assets);
 		batch = new ModelBatch();
 		this.hud = hud;
 

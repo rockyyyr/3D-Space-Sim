@@ -10,7 +10,7 @@ import com.space.util.OrbitTable;
  */
 public class AsteroidBelt {
 
-	public static final String FILENAME = "asteroids/Asteroid";
+	public static final String FILENAME = "Asteroid";
 	public static final int NUM_OF_ASTEROIDS = 125;
 
 	private ArrayList<CosmicObject> belt;
@@ -47,7 +47,7 @@ public class AsteroidBelt {
 				index = 1;
 		}
 
-		belt.add(new CosmicObject("asteroids/Ceres", 2f, 2.5f, 0, 0, 0));
+		belt.add(new CosmicObject("Ceres", 2f, 2.5f, 0, 0, 0));
 	}
 
 	public ArrayList<CosmicObject> getAsteroidBelt() {

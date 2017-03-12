@@ -2,7 +2,6 @@ package com.space.universe;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -14,6 +13,7 @@ import com.space.universe.solarsystem.Moon;
 import com.space.universe.solarsystem.NightSky;
 import com.space.universe.solarsystem.Planet;
 import com.space.universe.solarsystem.Sun;
+import com.space.util.Assets;
 import com.space.util.AttributeReader;
 import com.space.util.OrbitPath;
 
@@ -22,7 +22,7 @@ import com.space.util.OrbitPath;
  */
 public class Universe {
 
-	private AssetManager assets;
+	private Assets assets;
 
 	public static final float AU = 250;
 	public static float ORBITAL_VELOCITY = 0.2f;
@@ -39,24 +39,18 @@ public class Universe {
 	private boolean skyVisible;
 	private boolean passedZero;
 
-	public Universe() {
-		assets = new AssetManager();
+	public Universe(Assets assets) {
 		sun = new Sun();
 		sky = new NightSky();
 		asteroidBelt = new AsteroidBelt();
 
+		this.assets = assets;
+
 		orbiting = true;
 		skyVisible = true;
 
-		sun.buildModel(assets);
-		sky.buildModel(assets);
-
 		populatePlanetArray();
-		buildModels();
-	}
-
-	public AssetManager getAssetManager() {
-		return assets;
+		buildModels(assets);
 	}
 
 	public void renderSky(ModelBatch batch, Environment environment) {
@@ -183,7 +177,9 @@ public class Universe {
 	/*
 	 * Load assets for all bodies
 	 */
-	private void buildModels() {
+	private void buildModels(Assets assets) {
+		sun.buildModel(assets);
+		sky.buildModel(assets);
 		for (Planet planet : planets) {
 			planet.buildModel(assets);
 
@@ -200,7 +196,6 @@ public class Universe {
 	}
 
 	public void dispose() {
-		assets.dispose();
 		// sun.dispose();
 		// sky.dispose();
 		// for (Planet planet : planets)

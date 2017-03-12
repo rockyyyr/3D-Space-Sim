@@ -3081,7 +3081,7 @@
       "textures": [
         {
           "id": "Moon",
-          "filename": "asteroids/Itokawa Grayscale.jpg",
+          "filename": "Itokawa Grayscale.jpg",
           "type": "DIFFUSE"
         }
       ]

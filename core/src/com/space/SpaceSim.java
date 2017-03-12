@@ -3,15 +3,18 @@ package com.space;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.space.util.Assets;
 
 public class SpaceSim extends Game {
 
-	private Simulation simulation;
+	private Assets assets;
 
 	@Override
 	public void create() {
-		simulation = new Simulation();
-		setScreen(new LoadingScreen(SpaceSim.this, simulation));
+		assets = new Assets();
+		assets.loadModels();
+
+		setScreen(new LoadingScreen(SpaceSim.this, assets));
 	}
 
 	@Override
@@ -26,6 +29,5 @@ public class SpaceSim extends Game {
 	@Override
 	public void dispose() {
 		super.dispose();
-		simulation.dispose();
 	}
 }
