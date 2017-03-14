@@ -19,7 +19,7 @@ public class Moon extends OrbitingCosmicObject {
 
 		table = OrbitTable.getTable();
 
-		setRandomPosition();
+		// setRandomPosition();
 	}
 
 	@Override

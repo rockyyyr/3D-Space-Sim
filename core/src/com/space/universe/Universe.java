@@ -68,12 +68,12 @@ public class Universe {
 
 			if (planet.hasMoon()) {
 				for (Moon moon : planet.getMoons()) {
-					if (orbiting) {
-						advanceOrbit(planet, moon);
-						advanceOrbit(planet, moon);
-						advanceOrbit(planet, moon);
-						advanceOrbit(planet, moon);
-					}
+					// if (orbiting) {
+					advanceOrbit(planet, moon);
+					advanceOrbit(planet, moon);
+					advanceOrbit(planet, moon);
+					advanceOrbit(planet, moon);
+					// }
 					moon.render(batch, environment);
 				}
 			}
@@ -91,12 +91,12 @@ public class Universe {
 	public void renderOrbitPaths(Camera camera) {
 		for (Planet planet : getPlanets()) {
 			if (planetOrbitPathsVisible) {
-				OrbitPath.drawOrbitalPath(sun, planet, camera);
+				OrbitPath.drawOrbitalPath(sun, planet, camera, 0);
 			}
 			if (moonOrbitPathsVisible) {
 				if (planet.hasMoon()) {
 					for (Moon moon : planet.getMoons()) {
-						OrbitPath.drawOrbitalPath(planet, moon, camera);
+						OrbitPath.drawOrbitalPath(planet, moon, camera, planet.getTilt());
 					}
 				}
 			}
@@ -145,10 +145,12 @@ public class Universe {
 			checkForYearAdvancement(angle);
 		}
 
-		float forceX = ((orbital.getDistance() * (float) Math.cos(angle)) + host.getPosition().x);
-		float forceZ = ((orbital.getDistance() * (float) Math.sin(angle)) + host.getPosition().z);
+		float X = (orbital.getDistance() * (float) Math.cos(angle)) + host.getPosition().x;
+		float Z = (orbital.getDistance() * (float) Math.sin(angle)) + host.getPosition().z;
 
-		orbital.advanceOrbit(new Vector3(forceX, 0, forceZ));
+		float Y = orbital.getDistance() * (float) (Math.toRadians(host.getTilt()) * Math.cos(angle));
+
+		orbital.advanceOrbit(new Vector3(X, Y, Z));
 	}
 
 	/*

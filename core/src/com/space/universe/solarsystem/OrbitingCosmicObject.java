@@ -14,8 +14,6 @@ import com.space.util.OrbitTable;
  */
 public class OrbitingCosmicObject extends CosmicObject {
 
-	public final float TILT;
-
 	private Random random;
 
 	private float[][] table;
@@ -98,7 +96,7 @@ public class OrbitingCosmicObject extends CosmicObject {
 	}
 
 	private void applyTilt(float tilt) {
-		modelInstance.transform.rotate(1, 0, 1, tilt);
+		modelInstance.transform.rotate(0, 1, 1, tilt);
 	}
 
 }

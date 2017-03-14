@@ -14,7 +14,8 @@ public class CosmicObject {
 	protected final String NAME;
 	protected final float SCALE;
 	protected float DISTANCE;
-	protected float ROTATION = 1f;
+	protected float ROTATION = -1f;
+	protected float TILT = 0;
 
 	protected Model model;
 	protected ModelInstance modelInstance;
@@ -66,6 +67,10 @@ public class CosmicObject {
 
 	public float getDistance() {
 		return DISTANCE;
+	}
+
+	public float getTilt() {
+		return TILT;
 	}
 
 	/**

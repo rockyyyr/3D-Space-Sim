@@ -21,7 +21,7 @@ public class OrbitPath {
 	 * @param orbital
 	 * @param camera
 	 */
-	public static void drawOrbitalPath(CosmicObject host, CosmicObject orbital, Camera camera) {
+	public static void drawOrbitalPath(CosmicObject host, CosmicObject orbital, Camera camera, float tilt) {
 		Matrix4 mat = camera.combined.cpy();
 		mat.rotate(1, 0, 0, 90);
 		renderer.setProjectionMatrix(mat);
