@@ -13,13 +13,14 @@ public class Moon extends OrbitingCosmicObject {
 	private float[][] table;
 	private float distanceFromHost;
 
-	public Moon(String name, float scale, float distanceFromHost, float orbitalPeriod, float tilt, float lightDistanceFromPlanet, Planet host) {
-		super(name, scale, (host.DISTANCE + (Universe.AU * distanceFromHost)) / Universe.AU, orbitalPeriod, tilt, lightDistanceFromPlanet);
+	public Moon(String name, float scale, float distanceFromHost, Planet host) {
+		super(name, scale, (host.DISTANCE + (Universe.AU * distanceFromHost)) / Universe.AU, host.getTilt(), 0);
 		this.distanceFromHost = distanceFromHost;
 
 		table = OrbitTable.getTable();
 
-		// setRandomPosition();
+		setRandomPosition();
+		setInclination(host.getTilt());
 	}
 
 	@Override

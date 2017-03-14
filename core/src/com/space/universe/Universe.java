@@ -68,12 +68,12 @@ public class Universe {
 
 			if (planet.hasMoon()) {
 				for (Moon moon : planet.getMoons()) {
-					// if (orbiting) {
-					advanceOrbit(planet, moon);
-					advanceOrbit(planet, moon);
-					advanceOrbit(planet, moon);
-					advanceOrbit(planet, moon);
-					// }
+					if (orbiting) {
+						advanceOrbit(planet, moon);
+						advanceOrbit(planet, moon);
+						advanceOrbit(planet, moon);
+						advanceOrbit(planet, moon);
+					}
 					moon.render(batch, environment);
 				}
 			}
@@ -148,7 +148,7 @@ public class Universe {
 		float X = (orbital.getDistance() * (float) Math.cos(angle)) + host.getPosition().x;
 		float Z = (orbital.getDistance() * (float) Math.sin(angle)) + host.getPosition().z;
 
-		float Y = orbital.getDistance() * (float) (Math.toRadians(host.getTilt()) * Math.cos(angle));
+		float Y = orbital.getDistance() * (float) (Math.toRadians(orbital.getInclination() / 2) * Math.cos(angle));
 
 		orbital.advanceOrbit(new Vector3(X, Y, Z));
 	}

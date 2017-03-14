@@ -33,11 +33,13 @@ public class AsteroidBelt {
 			int pos = rand.nextInt(table.length - 1);
 			float distance = rand.nextFloat() + 2;
 			float scale = (float) rand.nextDouble() + rand.nextInt(2);
+			float inclination = rand.nextInt(20);
 
-			Asteroid asteroid = new Asteroid(FILENAME + index, scale, distance, 0, 0, 0);
+			Asteroid asteroid = new Asteroid(FILENAME + index, scale, distance);
 
 			asteroid.setPosition(table[pos][0] * distance, table[pos][1] * distance, table[pos][2] * distance);
 			asteroid.setRotationVector(rand.nextInt(2), rand.nextInt(2), rand.nextInt(2), (float) rand.nextDouble() + rand.nextInt(5));
+			asteroid.setInclination(inclination);
 
 			belt.add(asteroid);
 
@@ -47,7 +49,7 @@ public class AsteroidBelt {
 				index = 1;
 		}
 
-		belt.add(new Asteroid("Ceres", 2f, 2.5f, 0, 0, 0));
+		belt.add(new Asteroid("Ceres", 2f, 2.5f));
 	}
 
 	public ArrayList<Asteroid> getAsteroidBelt() {

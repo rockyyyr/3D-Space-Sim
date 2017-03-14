@@ -5,8 +5,8 @@ package com.space.universe.solarsystem;
  */
 public class Asteroid extends OrbitingCosmicObject {
 
-	public Asteroid(String name, float scale, float distanceFromHost, float orbitalPeriod, float tilt, float cameraDistanceFromPlanet) {
-		super(name, scale, distanceFromHost, orbitalPeriod, tilt, cameraDistanceFromPlanet);
+	public Asteroid(String name, float scale, float distanceFromHost) {
+		super(name, scale, distanceFromHost, 0, 0);
 	}
 
 	/**

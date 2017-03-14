@@ -14,8 +14,8 @@ public class Planet extends OrbitingCosmicObject {
 	private ArrayList<Moon> moons;
 	private OrbitPath orbitPath;
 
-	public Planet(String name, float scale, float distanceFromSun, float orbitalPeriod, float tilt, float lightDistanceFromPlanet, boolean hasMoon) {
-		super(name, scale, distanceFromSun, orbitalPeriod, tilt, lightDistanceFromPlanet);
+	public Planet(String name, float scale, float distanceFromSun, float tilt, float lightDistanceFromPlanet, boolean hasMoon) {
+		super(name, scale, distanceFromSun, tilt, lightDistanceFromPlanet);
 
 		this.hasMoon = hasMoon;
 		moons = new ArrayList<Moon>();

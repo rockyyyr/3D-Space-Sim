@@ -106,18 +106,18 @@ public class AttributeReader {
 		String name = attributes[0];
 		float diameter = Float.valueOf(attributes[1]);
 		float distance = Float.valueOf(attributes[2]);
-		float orbitalPeriod = Float.valueOf(attributes[3]);
+		// float orbitalPeriod = Float.valueOf(attributes[3]);
 		float dayLength = Float.valueOf(attributes[4]);
 		float lightDistance = Float.valueOf(attributes[5]);
 		boolean hasMoon = Boolean.valueOf(attributes[6]);
-		return new Planet(name, diameter, distance, orbitalPeriod, dayLength, lightDistance, hasMoon);
+		return new Planet(name, diameter, distance, dayLength, lightDistance, hasMoon);
 	}
 
 	private static Moon createMoonFromData(String[] attributes, Planet planet) {
 		String name = attributes[1];
 		float scale = Float.valueOf(attributes[2]);
 		float distance = Float.valueOf(attributes[3]);
-		return new Moon(name, scale, distance, 0, 0, 0, planet);
+		return new Moon(name, scale, distance, planet);
 	}
 
 }

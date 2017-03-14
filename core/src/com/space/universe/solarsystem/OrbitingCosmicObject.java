@@ -14,21 +14,14 @@ import com.space.util.OrbitTable;
  */
 public class OrbitingCosmicObject extends CosmicObject {
 
+	private float INCLINATION;
 	private Random random;
 
 	private float[][] table;
 	private float cameraDistance;
 	private float cameraOrbitDifferential;
 
-	/**
-	 * @param name
-	 * @param scale
-	 * @param distanceFromHost
-	 * @param orbitalPeriod
-	 * @param tilt
-	 * @param cameraDistanceFromPlanet
-	 */
-	public OrbitingCosmicObject(String name, float scale, float distanceFromHost, float orbitalPeriod, float tilt, float cameraDistanceFromPlanet) {
+	public OrbitingCosmicObject(String name, float scale, float distanceFromHost, float tilt, float cameraDistanceFromPlanet) {
 		super(name, scale);
 
 		TILT = tilt;
@@ -77,6 +70,25 @@ public class OrbitingCosmicObject extends CosmicObject {
 	public void advanceOrbit(Vector3 vector) {
 		position.set(vector);
 		advancecameraOrbit(vector);
+	}
+
+	/**
+	 * Get the tilt of this objects orbit
+	 * 
+	 * @return the inclination in degrees
+	 */
+	public float getInclination() {
+		return INCLINATION;
+	}
+
+	/**
+	 * Set the tilt of this objects orbit around its host
+	 * 
+	 * @param inclination
+	 *            the inclination in degrees
+	 */
+	public void setInclination(float inclination) {
+		INCLINATION = inclination;
 	}
 
 	private void advancecameraOrbit(Vector3 vector) {

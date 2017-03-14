@@ -7,10 +7,10 @@ import com.space.SpaceSim;
 public class SpaceSim3DDesktopLauncher {
 	public static void main(String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.samples = 3;
+		config.samples = 1;
 		config.width = 1800;
 		config.height = 900;
-		// config.fullscreen = true;
+		config.fullscreen = true;
 		new LwjglApplication(new SpaceSim(), config);
 	}
 }
