@@ -1,6 +1,8 @@
-Planet    |Name     |Scale    |Distance |Inclination
-Earth     |EarthMoon|0.277    |0.0757   |5.14
-Jupiter   |Io       |0.3      |0.1		|
+Planet    |Name     |Scale    |Distance
+Earth     |EarthMoon|0.277    |0.0757   
+Mars      |Phobos   |1		  |0.07
+Mars      |Phobos   |0.6      |0.1
+Jupiter   |Io       |0.3      |0.1		
 Jupiter   |IcyMoon1 |0.4      |0.15
 Jupiter   |Europa   |0.3      |0.2
 Jupiter   |IcyMoon1 |0.2      |0.25
@@ -8,4 +10,10 @@ Saturn    |IcyMoon2 |0.4      |0.1
 Saturn    |IcyMoon2 |0.3      |0.15
 Saturn    |IcyMoon2 |0.2      |0.2
 Saturn    |IcyMoon2 |0.2      |0.25
+Uranus    |IcyMoon3 |0.2      |0.1
+Uranus    |IcyMoon3 |0.3      |0.15
+Uranus    |IcyMoon3 |0.4      |0.2
+Neptune   |IcyMoon4 |0.2      |0.1
+Neptune   |IcyMoon4 |0.3      |0.15
+Neptune   |IcyMoon4 |0.4      |0.2
 Pluto     |IcyMoon5 |0.3      |0.01
