@@ -1,6 +1,7 @@
-# 3D Solar System Simulation
+# 3D Solar System Simulation 
+###### Built with Java and Lib Gdx
 
-[Download Executable](https://github.com/rockyyyr/3D-Space-Sim/releases/download/v1.0/3DSpace.jar)
+## [Download Executable](https://github.com/rockyyyr/3D-Space-Sim/releases/download/v1.0/3DSpace.jar)
 
 Travel through the solar system in this realistic, sort of to scale universe!
 
